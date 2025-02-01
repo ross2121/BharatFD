@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "FAQ" ALTER COLUMN "language" SET NOT NULL,
+ALTER COLUMN "language" SET DEFAULT 'eng',
+ALTER COLUMN "language" SET DATA TYPE TEXT;
