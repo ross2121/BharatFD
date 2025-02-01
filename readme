@@ -1,0 +1,100 @@
+FAQ Management System with Multilingual Support
+This project is a backend application built using Node.js, Express.js, and Redis for caching. It provides a REST API for managing FAQs with multi-language translation support. The application integrates a WYSIWYG editor for formatting answers and uses Redis for efficient caching of translations.
+
+Features
+FAQ Management: Create, read, update, and delete FAQs.
+
+Multilingual Support: Each FAQ can be translated into multiple languages (e.g., English, Hindi, Bengali).
+
+WYSIWYG Editor: Rich text formatting for FAQ answers.
+
+Caching: Redis is used to cache translations for improved performance.
+
+Admin Panel: User-friendly interface for managing FAQs.
+
+API: RESTful API with language selection via query parameters.
+
+Unit Tests: Comprehensive unit tests for models and API endpoints.
+
+Docker Support: Dockerfile and docker-compose.yml for easy deployment.
+
+Installation
+Prerequisites
+Node.js (v14 or higher)
+
+npm (v6 or higher)
+
+Docker (optional)
+
+Redis (optional, for caching)
+
+Steps
+Clone the repository:
+
+bash
+Copy
+git clone https://github.com/yourusername/faq-management-system.git
+cd faq-management-system
+Install dependencies:
+
+bash
+Copy
+npm install
+Set up environment variables:
+Create a .env file in the root directory and add the following variables:
+
+env
+Copy
+PORT=8000
+REDIS_URL=redis://localhost:6379
+GOOGLE_TRANSLATE_API_KEY=your_google_translate_api_key
+Run the application:
+
+bash
+Copy
+npm start
+Run with Docker:
+If you prefer to use Docker, you can build and run the application using Docker Compose:
+
+bash
+Copy
+docker-compose up --build
+API Usage
+Fetch FAQs in English (default)
+bash
+Copy
+curl http://localhost:8000/api/faqs/
+Fetch FAQs in Hindi
+bash
+Copy
+curl http://localhost:8000/api/faqs/?lang=hi
+Fetch FAQs in Bengali
+bash
+Copy
+curl http://localhost:8000/api/faqs/?lang=bn
+Admin Panel
+The admin panel can be accessed at http://localhost:8000/admin. You can manage FAQs, including adding, editing, and deleting entries.
+
+Caching Mechanism
+Redis is used to cache translations for improved performance. The cache is automatically updated when an FAQ is created or updated.
+
+Unit Tests
+To run the unit tests, use the following command:
+
+bash
+Copy
+npm test
+Documentation
+For more detailed documentation, including API endpoints and examples, refer to the API Documentation.
+
+Contribution Guidelines
+Fork the repository.
+
+Create a new branch for your feature or bugfix.
+
+Commit your changes with clear and descriptive messages.
+
+Push your branch and create a pull request.
+
+
+

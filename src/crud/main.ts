@@ -3,17 +3,14 @@ import { FAQ } from "../types/zod";
 import translateText from "../components/translate"
 import { Router } from "express";
 import { RedisClientType,createClient } from "redis";
-
-
+import { Adminauthorization } from "../components/middleware";
 const router=Router();
 const prisma =new PrismaClient();
-
 const redis=createClient();
 redis.connect();
 
 router.post("/posts",async(req:any,res:any)=>{
-   const {question,answer}=req.body;
-      const lang:string=req.query.lang;   
+   const {question,answer}=req.body;   
       const safeparse=FAQ.safeParse(req.body);
       if(!safeparse){
          return res.json({status:4000},{message:"Enter the body correctly"});
@@ -25,15 +22,17 @@ router.post("/posts",async(req:any,res:any)=>{
              
          }
       })
-      const langanwer=await translateText(lang,question);
-    
-      redis.lPush(lang,langanwer)
-      // await redis.lPush(lang,[answer,langanwer])
-      // await redis.lPush(lang,question)
+      const langanwer=await translateText("hi",question);
+      console.log(langanwer);
+      const lquestion=await translateText("hi",answer);
+      const BengaliQ=await translateText("bn",question);
+      const BengaliA=await translateText("bn",answer);
+      await redis.lPush("hi",[langanwer,lquestion])
+       await redis.lPush("bn",[BengaliA,BengaliQ]); 
       res.status(200).json(response);
   
 })
-router.patch("/posts/:id",async(req:any,res:any)=>{
+router.patch("/posts/:id",Adminauthorization,async(req:any,res:any)=>{
      const id=req.params;
      if(!id){
       res.json(400,{message:"No id found"});
@@ -57,8 +56,8 @@ router.patch("/posts/:id",async(req:any,res:any)=>{
      })
      res.json({status:200},{message:"Update succesfull",response})
 })
-router.get("/posts",async(req:any,res:any)=>{
-   const id=req.query.lang;
+router.get("/posts/:id",async(req:any,res:any)=>{
+   const id=req.params;
    if(!id){
     res.json(400,{message:"No id found"});
    }
@@ -73,7 +72,7 @@ router.get("/posts",async(req:any,res:any)=>{
    }
    res.json({status:200},{message:"Update succesfull",faq})
 })
-router.delete("/posts/:id",async(req:any,res:any)=>{
+router.delete("/posts/:id",Adminauthorization,async(req:any,res:any)=>{
    const id=req.params;
    if(!id){
     res.json(400,{message:"No id found"});
@@ -98,7 +97,4 @@ router.get("/posts",async(req:any,res:any)=>{
   const hin= await redis.rPop(lang)
   res.json({hin});
 })
-
-
-
 export const mains=router;

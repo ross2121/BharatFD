@@ -24,7 +24,6 @@ const redis = (0, redis_1.createClient)();
 redis.connect();
 router.post("/posts", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { question, answer } = req.body;
-    const lang = req.query.lang;
     const safeparse = zod_1.FAQ.safeParse(req.body);
     if (!safeparse) {
         return res.json({ status: 4000 }, { message: "Enter the body correctly" });
@@ -35,10 +34,13 @@ router.post("/posts", (req, res) => __awaiter(void 0, void 0, void 0, function* 
             answer,
         }
     });
-    const langanwer = yield (0, translate_1.default)(lang, question);
-    redis.lPush(lang, langanwer);
-    // await redis.lPush(lang,[answer,langanwer])
-    // await redis.lPush(lang,question)
+    const langanwer = yield (0, translate_1.default)("hi", question);
+    console.log(langanwer);
+    const lquestion = yield (0, translate_1.default)("hi", answer);
+    const BengaliQ = yield (0, translate_1.default)("bn", question);
+    const BengaliA = yield (0, translate_1.default)("bn", answer);
+    yield redis.lPush("hi", [langanwer, lquestion]);
+    yield redis.lPush("bn", [BengaliA, BengaliQ]);
     res.status(200).json(response);
 }));
 router.patch("/posts/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
